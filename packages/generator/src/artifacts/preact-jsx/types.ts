@@ -23,7 +23,12 @@ interface Dict {
   [k: string]: unknown
 }
 
-export type DataAttrs = Record<\`data-\${string}\`, unknown>
+/**
+ * Maps variant props to accept both plain values and Preact Signals
+ */
+export type SignalishProps<P extends Dict> = {
+  [K in keyof P]: JSX.Signalish<P[K]>
+}
 
 export interface UnstyledProps {
   /**
@@ -40,7 +45,7 @@ export interface AsProps {
 }
 
 export interface ${componentName}<T extends ElementType, P extends Dict = {}> {
-  (props: JsxHTMLProps<ComponentProps<T> & UnstyledProps & AsProps, Assign<JsxStyleProps, P>>): JSX.Element
+  (props: JsxHTMLProps<ComponentProps<T> & UnstyledProps & AsProps, Assign<JsxStyleProps, SignalishProps<P>>>): JSX.Element
   displayName?: string | undefined
 }
 
@@ -50,7 +55,7 @@ interface RecipeFn {
 
 export interface JsxFactoryOptions<TProps extends Dict> {
   dataAttr?: boolean
-  defaultProps?: Partial<TProps> & DataAttrs
+  defaultProps?: Partial<TProps>
   shouldForwardProp?: (prop: string, variantKeys: string[]) => boolean
   forwardProps?: string[]
 }
