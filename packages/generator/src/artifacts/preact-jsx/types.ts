@@ -25,6 +25,10 @@ interface Dict {
 
 export type DataAttrs = Record<\`data-\${string}\`, unknown>
 
+export type SignalishProps<P extends Dict> = {
+  [K in keyof P]: JSX.Signalish<P[K]>
+}
+
 export interface UnstyledProps {
   /**
    * Whether to remove recipe styles
@@ -40,7 +44,7 @@ export interface AsProps {
 }
 
 export interface ${componentName}<T extends ElementType, P extends Dict = {}> {
-  (props: JsxHTMLProps<ComponentProps<T> & UnstyledProps & AsProps, Assign<JsxStyleProps, P>>): JSX.Element
+  (props: JsxHTMLProps<ComponentProps<T> & UnstyledProps & AsProps, Assign<JsxStyleProps, SignalishProps<P>>>): JSX.Element
   displayName?: string | undefined
 }
 

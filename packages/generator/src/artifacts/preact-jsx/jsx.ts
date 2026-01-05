@@ -45,15 +45,27 @@ export function generatePreactJsxFactory(ctx: Context) {
           return splitProps(combinedProps, normalizeHTMLProps.keys, __shouldForwardProps__, __cvaFn__.variantKeys, isCssProperty)
         }, [combinedProps])
 
+        function getUnwrappedVariants() {
+          const result = {}
+          for (const key in variantProps) {
+            const value = variantProps[key]
+            const isSignal = value != null && typeof value === 'object' && 'value' in value && typeof value.peek === 'function' && typeof value.subscribe === 'function'
+            result[key] = isSignal ? value.value : value
+          }
+          return result
+        }
+
         function recipeClass() {
           const { css: cssStyles, ...propStyles } = styleProps
-          const compoundVariantStyles = __cvaFn__.__getCompoundVariantCss__?.(variantProps)
-          return cx(__cvaFn__(variantProps, false), css(compoundVariantStyles, propStyles, cssStyles), combinedProps.class, combinedProps.className)
+          const unwrappedVariants = getUnwrappedVariants()
+          const compoundVariantStyles = __cvaFn__.__getCompoundVariantCss__?.(unwrappedVariants)
+          return cx(__cvaFn__(unwrappedVariants, false), css(compoundVariantStyles, propStyles, cssStyles), combinedProps.class, combinedProps.className)
         }
 
         function cvaClass() {
           const { css: cssStyles, ...propStyles } = styleProps
-          const cvaStyles = __cvaFn__.raw(variantProps)
+          const unwrappedVariants = getUnwrappedVariants()
+          const cvaStyles = __cvaFn__.raw(unwrappedVariants)
           return cx(css(cvaStyles, propStyles, cssStyles), combinedProps.class, combinedProps.className)
         }
 
