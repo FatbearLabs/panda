@@ -25,9 +25,6 @@ interface Dict {
 
 export type DataAttrs = Record<\`data-\${string}\`, unknown>
 
-/**
- * Maps variant props to accept both plain values and Preact Signals
- */
 export type SignalishProps<P extends Dict> = {
   [K in keyof P]: JSX.Signalish<P[K]>
 }
