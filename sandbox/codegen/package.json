@@ -34,7 +34,7 @@
     "cac": "6.7.14",
     "eslint-plugin-react-hooks": "7.0.1",
     "eslint-plugin-react-refresh": "0.4.24",
-    "happy-dom": "20.0.11",
+    "happy-dom": "20.8.8",
     "jsdom": "27.2.0",
     "preact": "10.27.2",
     "solid-js": "1.9.10",
